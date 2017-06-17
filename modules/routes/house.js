@@ -20,15 +20,27 @@ router.use(bodyParser.urlencoded({
 router.use(bodyParser.json());
 
 
-
 router.get('/', function(req, res) {
   // get and send back all the things
   console.log('get houses db');
   housesModel.find().then(function(data) {
-
     res.send(data);
-
   });
+});
+
+router.post('/', function(req, res) {
+  console.log('db post: ', recordToAdd);
+  // retrieved the req.body
+  // putting it into an object to be saved in the db
+  var recordToAdd = {
+    cost: req.body.cost,
+  	rent : req.body.rent,
+  	sqft : req.body.sqft,
+  	city : req.body.city
+  };
+  // create new record
+  var newRecord = housesModel(recordToAdd);
+  newRecord.save();
 });
 
 module.exports = router;

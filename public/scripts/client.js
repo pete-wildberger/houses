@@ -13,8 +13,6 @@ app.config(function($routeProvider) {
   });
 });
 
-
-
 app.controller('HouseController', HouseController);
 
 function HouseController(HouseService, $location) {
@@ -24,25 +22,48 @@ function HouseController(HouseService, $location) {
   vm.forSale = [];
 
   vm.onReady = function() {
+    getHouses();
+  };
+  vm.postIt = function() {
+    console.log('in postIt');
+    var listingToAdd = {
+      cost: vm.costIn,
+      rent: vm.rentIn,
+      sqft: vm.sqftIn,
+      city: vm.cityIn
+    }; //end listingToAdd
+    console.log(listingToAdd);
+    HouseService.postHouses(listingToAdd);
     HouseService.getHouses().then(function(res) {
       console.log(res);
-
-      vm.allListings = res;
-
-      for (var i = 0; i < vm.allListings.length; i++) {
-        if (vm.allListings[i].cost === undefined) {
-          console.log('rent');
-          vm.forRent.push(vm.allListings[i]);
-        } else if (vm.allListings[i].rent === undefined) {
-          console.log('sale');
-          vm.forSale.push(vm.allListings[i]);
-        }
-      }
+      vm.go('/');
+      getSorted(res);
     });
-  };
+  }; //end postIt
 
   vm.go = function(path) {
     console.log('go click');
     $location.path(path);
   };
+
+  function getSorted(Arr) {
+    for (var i = 0; i < Arr.length; i++) {
+      if (Arr[i].cost === undefined) {
+        console.log('rent');
+        vm.forRent.push(Arr[i]);
+      } else if (Arr[i].rent === undefined) {
+        console.log('sale');
+        vm.forSale.push(Arr[i]);
+      }
+    }
+  }
+
+  function getHouses(){
+    HouseService.getHouses().then(function(res) {
+      console.log(res);
+      getSorted(res);
+    });
+  }
+
+
 }
