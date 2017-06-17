@@ -1,6 +1,8 @@
 <div class="col-md-12">
-  <input placeholder="Location" ng-model="hc.cityIn">
-  <input placeholder="Price" ng-model="hc.costIn">
-  <input placeholder="Square Footage" ng-model="hc.sqftIn">
-  <button class="inBut" ng-click="hc.postIt()">LIST IT</button>
+  <form name="search">
+    <input placeholder="Location" ng-model="hc.cityIn" required>
+    <input placeholder="Price" ng-model="hc.costIn" required>
+    <input placeholder="Square Footage" ng-model="hc.sqftIn" required>
+    <button class="inBut block" ng-click="hc.postIt()" ng-disabled="search.$invalid">LIST IT</button>
+  </form>
 </div>

@@ -34,11 +34,10 @@ function HouseController(HouseService, $location) {
     }; //end listingToAdd
     console.log(listingToAdd);
     HouseService.postHouses(listingToAdd);
-    HouseService.getHouses().then(function(res) {
-      console.log(res);
-      vm.go('/');
-      getSorted(res);
-    });
+    getHouses();
+    vm.go('/');
+
+
   }; //end postIt
 
   vm.go = function(path) {
@@ -58,7 +57,7 @@ function HouseController(HouseService, $location) {
     }
   }
 
-  function getHouses(){
+  function getHouses() {
     HouseService.getHouses().then(function(res) {
       console.log(res);
       getSorted(res);
