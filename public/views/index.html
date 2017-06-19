@@ -14,18 +14,18 @@
 
 <body ng-app="myApp">
   <main ng-controller="HouseController as hc">
-    <div class="container" ng-init="hc.onReady()">
+    <div class="container" >
       <div class="row">
         <div class="col-md-12 header">
           <h1>HOUSING FOR Y'ALL!</h1>
           <ng-view></ng-view>
         </div>
       </div>
-      <div class="row">
+      <div class="row" ng-init="hc.displayHouses();">
         <div class="col-md-6">
           <div class="row">
             <h2>FOR SALE</h2>
-            <div class="col-md-3 listing" ng-repeat="x in hc.forSale">
+            <div class="col-md-3 listing" ng-repeat="x in hc.listings track by $index" ng-if="x.rent === undefined">
               <p>Location: {{x.city}}</p>
               <p>Cost: {{x.cost | currency}}</p>
               <p>Square feet: {{x.sqft}}</p>
@@ -35,7 +35,7 @@
         <div class="col-md-6">
           <div class="row">
             <h2>FOR RENT</h2>
-            <div class="col-md-3 listing" ng-repeat="x in hc.forRent">
+            <div class="col-md-3 listing" ng-repeat="x in hc.listings " ng-if="x.cost === undefined">
               <p>Location: {{x.city}}</p>
               <p>Rent: {{ x.rent | currency}}</p>
               <p>Square feet: {{x.sqft}}</p>

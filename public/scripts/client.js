@@ -13,18 +13,18 @@ app.config(function($routeProvider) {
   });
 });
 
+app.config(['$qProvider', function($qProvider) {
+  $qProvider.errorOnUnhandledRejections(false);
+}]);
+
 app.controller('HouseController', HouseController);
 
-function HouseController(HouseService, $location) {
+function HouseController(HouseService, $location, $window) {
   console.log('NG YO');
   var vm = this;
-  vm.forRent = [];
-  vm.forSale = [];
 
-  vm.onReady = function() {
-    getHouses();
-  };
   vm.postIt = function() {
+
     console.log('in postIt');
     var listingToAdd = {
       cost: vm.costIn,
@@ -32,9 +32,13 @@ function HouseController(HouseService, $location) {
       sqft: vm.sqftIn,
       city: vm.cityIn
     }; //end listingToAdd
-    console.log(listingToAdd);
     HouseService.postHouses(listingToAdd);
-    getHouses();
+    HouseService.getHouses().then(function(res) {
+      console.log('display', res);
+        vm.listings = res;
+        $window.location.reload();
+    });
+    console.log(listingToAdd);
     vm.go('/');
 
 
@@ -45,24 +49,13 @@ function HouseController(HouseService, $location) {
     $location.path(path);
   };
 
-  function getSorted(Arr) {
-    for (var i = 0; i < Arr.length; i++) {
-      if (Arr[i].cost === undefined) {
-        console.log('rent');
-        vm.forRent.push(Arr[i]);
-      } else if (Arr[i].rent === undefined) {
-        console.log('sale');
-        vm.forSale.push(Arr[i]);
-      }
-    }
-  }
 
-  function getHouses() {
+  vm.displayHouses = function() {
     HouseService.getHouses().then(function(res) {
-      console.log(res);
-      getSorted(res);
+      console.log('display', res);
+      vm.listings = res;
     });
-  }
+  };
 
 
 }

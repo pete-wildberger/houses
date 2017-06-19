@@ -4,7 +4,7 @@ app.service('HouseService', function($http) {
   sv.getHouses = function() {
     console.log('in getHoouses');
     return $http.get('/houses').then(function(res) {
-      console.log(res.data);
+      console.log('get house', res.data);
       return res.data;
     });
   };
@@ -15,5 +15,4 @@ app.service('HouseService', function($http) {
       console.log('back from server with:', res);
     });
   };
-
 });

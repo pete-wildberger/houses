@@ -29,7 +29,7 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-  console.log('db post: ', recordToAdd);
+  console.log('db post: ', req.body);
   // retrieved the req.body
   // putting it into an object to be saved in the db
   var recordToAdd = {
@@ -38,24 +38,12 @@ router.post('/', function(req, res) {
   	sqft : req.body.sqft,
   	city : req.body.city
   };
-if(req.body.rent === undefined){
 
-  recordToAdd = {
-    cost: req.body.cost,
-  	sqft : req.body.sqft,
-  	city : req.body.city
-  };
-  } else if(req.body.cost === undefined){
-    recordToAdd = {
-    	rent : req.body.rent,
-    	sqft : req.body.sqft,
-    	city : req.body.city
-    };
-  }
   // create new record
   var newRecord = housesModel(recordToAdd);
 
   newRecord.save();
+  // res.send(200);
 
 });
 
